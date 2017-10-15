@@ -17,3 +17,29 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
+
+    fee:
+        legal:
+            in_percent: 0.03
+            in_max: 5.00
+            out_percent: 0.3
+            out_min: 0.50
+            out_max_weekly: ~
+            out_max_weekly_discount: ~
+        natural:
+            in_percent: 0.03
+            in_max: 5.00
+            out_percent: 0.3
+            out_min: ~
+            out_max_weekly: 1000.00
+            out_max_weekly_discount: 3
+    rates:
+        USD:
+            rate: 1.1497
+            cnt: 100
+        JPY:
+            rate: 129.53
+            cnt: 1
+        EUR:
+            rate: 1
+            cnt: 100

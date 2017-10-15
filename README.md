@@ -1,4 +1,9 @@
 ps-task
 =======
 
-A Symfony project created on October 14, 2017, 1:43 pm.
+Symfony 2.8 application
+
+Use "composer update" command to download required dependences.
+
+To test implemented functionality use call "app/console fee:calculate:cash-operation".
+

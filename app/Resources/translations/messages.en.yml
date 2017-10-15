@@ -1,0 +1,8 @@
+File not found or can not be read: File not found or can not be read
+Bad file content: Bad file content
+Currency is not supported: Currency is not supported
+Wrong client type %type%: Wrong client type %type%
+Unknown cash direction %direction%: Unknown cash direction %direction%
+Bye: Bye!
+Calculate cash in/out operation fee. Expects file name as argument: Calculate cash in/out operation fee. Expects file name as argument.
+Path to csv file with operation records: Path to csv file with operation records.
