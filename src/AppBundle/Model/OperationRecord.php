@@ -18,37 +18,37 @@ class OperationRecord
     const CURRENCY_JPY = "JPY";
 
     /**
-     *
+     * Operation date
      * @var \DateTime
      */
     public $date;
 
     /**
-     *
+     * Clent identificator
      * @var int
      */
     public $client;
 
     /**
-     *
+     * Client type
      * @var string
      */
     public $clientType;
 
     /**
-     *
+     * Operation direction
      * @var string
      */
     public $direction;
 
     /**
-     *
+     * Operation Amount
      * @var float
      */
     public $amount;
 
     /**
-     *
+     * Currency code
      * @var string
      */
     public $currency;

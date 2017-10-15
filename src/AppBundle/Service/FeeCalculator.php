@@ -15,31 +15,33 @@ use AppBundle\Model\OperationRecord;
 class FeeCalculator
 {
     /**
-     *
+     * Translator to translate error messages
      * @var TranslatorInterface
      */
     private $translator;
 
     /**
      * Currency exchange rates
+     * @see parameters.yml
      * @var array
      */
     private $rates;
 
     /**
      * Fee settings;
+     * @see parameters.yml
      * @var array
      */
     private $feeCfg;
 
     /**
-     *
-     * @var array ['client' => ['monday' => 'date', 'sunday' => 'date', 'cnt' => 'int']]
+     * Map Out operation data
+     * @var array ['client' => ['monday' => 'date', 'sunday' => 'date', 'amount' => 'float in base currency', 'cnt' => 'int']]
      */
     private $clientMap = [];
 
     /**
-     *
+     * Constructor
      * @param TranslatorInterface $translator
      * @param array               $feeCfg
      * @param array               $rates
@@ -115,7 +117,6 @@ class FeeCalculator
      */
     protected function processRecord(OperationRecord $record)
     {
-
         if (!array_key_exists($record->currency, $this->rates)) {
             throw new ProcessException($this->translator->trans("Currency is not supported"));
         }
@@ -160,12 +161,14 @@ class FeeCalculator
         $amount = $record->amount / $this->rates[$record->currency]['rate'];
 
         if (null === $cfg['out_max_weekly']) {
+            //No discounts simple calculation
             return $this->getOutFee($record->amount, $record->currency, $cfg);
         }
 
         if (!isset($this->clientMap[$record->client])
             || $record->date->getTimestamp() > $this->clientMap[$record->client]['sunday']->getTimeStamp()
         ) {
+            //Client has first operation this week or at all
             $this->clientMap[$record->client] = [
                 'monday' => new \DateTime($record->date->format('Y-m-d').' monday this week'),
                 'sunday' => new \DateTime($record->date->format('Y-m-d').' sunday this week'),
@@ -183,11 +186,14 @@ class FeeCalculator
         if (empty($cfg['out_max_weekly_discount'])
             || $this->clientMap[$record->client]['cnt'] > $cfg['out_max_weekly_discount']
         ) {
+            //There are no exemptions by quantity or limit exceeded
             return $this->getOutFee($amount, $record->currency, $cfg);
         }
 
         if ($this->clientMap[$record->client]['amount'] >  $cfg['out_max_weekly']) {
+            //Weekly limit exceeded.
             $delta = $this->clientMap[$record->client]['amount'] - $cfg['out_max_weekly'];
+            //Check if all amount must be used to calculate fee
             $calculateFrom = $delta > $amount ? $amount : $delta;
 
             return $this->getOutFee($calculateFrom, $record->currency, $cfg);
